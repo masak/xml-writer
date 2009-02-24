@@ -1,0 +1,23 @@
+SVG is a module for creating Scalable Vector Graphics in Perl 6. Copyright
+2009 by Carl Mäsak.
+
+The specification outlining SVG can be found here: <http://www.w3.org/TR/SVG/>
+
+== Getting SVG up and running
+
+=== ...with proto
+
+ $ git clone git://github.com/masak/proto.git  # (1) download proto installer
+ $ cd proto
+ $ ./proto install svg                         # (2) use it to install SVG
+ $ cd projects/svg
+ $ perl6 svg-example                           # (3) ...and you're off!
+
+=== ...without proto
+
+TBW. :)
+
+== License
+
+The SVG module is released under Artistic 2.0. See LICENSE.
+Permission to release the game graciously given by the game author.
