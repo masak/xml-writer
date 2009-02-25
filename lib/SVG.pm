@@ -63,12 +63,12 @@ SVG - Scalable Vector Graphics generation and handling
 use v6;
 use SVG;
 
-my $svg = [
+my $svg =
     :width(200), :height(200),
     circle => [
         :cx(100), :cy(100), :r(50)
     ],
-];
+;
 
 say SVG.serialize($svg);
 =end code
