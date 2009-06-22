@@ -1,5 +1,5 @@
 SVG is a module for creating Scalable Vector Graphics in Perl 6. Copyright
-2009 by Carl Mäsak.
+2009, the SVG contributors (as listed in AUTHORS).
 
 The specification outlining SVG can be found here: <http://www.w3.org/TR/SVG/>
 
