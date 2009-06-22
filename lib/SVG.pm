@@ -3,9 +3,7 @@ use v6;
 class SVG {
 
     method serialize($tree) {
-        my @attrs = find_attributes($tree);
-        my @children = find_elements($tree);
-        return [~] gather element('svg', @attrs, @children);
+        return [~] gather visit(['svg' => $tree]);
     }
 
     sub find_attributes(@list) {
@@ -13,7 +11,7 @@ class SVG {
     }
 
     sub find_elements(@list) {
-        return grep { $_ ~~ Pair && $_.value ~~ Array }, @list;
+        return grep { $_ ~~ Str || ($_ ~~ Pair && $_.value ~~ Array) }, @list;
     }
 
     sub element($name, @attrs, @children) {
@@ -45,10 +43,15 @@ class SVG {
 
     sub visit(@list) {
         for find_elements(@list) -> $element {
-            my ($name, $subtree) = $element.kv;
-            my @attrs = find_attributes($subtree);
-            my @children = find_elements($subtree);
-            element($name, @attrs, @children);
+            if $element ~~ Str {
+                take $element;
+            }
+            else {
+                my ($name, $subtree) = $element.kv;
+                my @attrs = find_attributes($subtree);
+                my @children = find_elements($subtree);
+                element($name, @attrs, @children);
+            }
         }
     }
 }
@@ -68,6 +71,9 @@ my $svg =
     circle => [
         :cx(100), :cy(100), :r(50)
     ],
+    text => [
+        :x(10), :y(20), "hello"
+    ]
 ;
 
 say SVG.serialize($svg);
