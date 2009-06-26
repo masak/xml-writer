@@ -3,16 +3,15 @@ use v6;
 class SVG {
 
     method serialize($tree) {
-        visit(['svg' => $tree]);
+        die 'The XML tree must have a single root node'
+            unless 1 == $tree.elems && is_element($tree);
+        visit($tree.list);
     }
 
-    sub find_attributes(@list) {
-        grep { $_ ~~ Pair && $_.value !~~ Array }, @list;
-    }
-
-    sub find_elements(@list) {
-        grep { $_ ~~ Str || ($_ ~~ Pair && $_.value ~~ Array) }, @list;
-    }
+    my &is_attribute = { $_ ~~ Pair && $_.value !~~ Array };
+    my &is_element   = { $_ ~~ Pair && $_.value ~~ Array };
+    my &is_text_node = { $_ ~~ Str };
+    my &is_node      = { is_element($_) || is_text_node($_) };
 
     sub element($name, @attrs, @children) {
         @children
@@ -39,14 +38,14 @@ class SVG {
     }
 
     sub visit(@list) {
-        [~] @list.map: -> $element {
-            if $element ~~ Str {
-                $element;
+        [~] @list.map: -> $node {
+            if $node ~~ Str {
+                $node;
             }
             else {
-                my ($name, $subtree) = $element.kv;
-                my @attrs    = find_attributes($subtree);
-                my @children = find_elements\ ($subtree);
+                my ($name, $subtree) = $node.kv;
+                my @attrs    = grep &is_attribute, $subtree.list;
+                my @children = grep &is_node,      $subtree.list;
                 element($name, @attrs, @children);
             }
         }
@@ -63,7 +62,7 @@ SVG - Scalable Vector Graphics generation and handling
 use v6;
 use SVG;
 
-my $svg =
+my $svg = :svg[
     :width(200), :height(200),
     circle => [
         :cx(100), :cy(100), :r(50)
@@ -71,7 +70,7 @@ my $svg =
     text => [
         :x(10), :y(20), "hello"
     ]
-;
+];
 
 say SVG.serialize($svg);
 =end code
