@@ -99,7 +99,7 @@ what I can do.
 =head1 SEE ALSO
 L<http://www.w3.org/TR/SVG/>
 
-=head1 AUTHOR
+=head1 AUTHORS
 Carl Mäsak (masak on CPAN github #perl6, cmasak on gmail.com)
 significant contributions made by Daniel Schröer.
 
