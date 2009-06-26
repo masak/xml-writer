@@ -3,53 +3,50 @@ use v6;
 class SVG {
 
     method serialize($tree) {
-        return [~] gather visit(['svg' => $tree]);
+        visit(['svg' => $tree]);
     }
 
     sub find_attributes(@list) {
-        return grep { $_ ~~ Pair && $_.value !~~ Array }, @list;
+        grep { $_ ~~ Pair && $_.value !~~ Array }, @list;
     }
 
     sub find_elements(@list) {
-        return grep { $_ ~~ Str || ($_ ~~ Pair && $_.value ~~ Array) }, @list;
+        grep { $_ ~~ Str || ($_ ~~ Pair && $_.value ~~ Array) }, @list;
     }
 
     sub element($name, @attrs, @children) {
-        if @children {
-            element_open($name, @attrs);
-            visit(@children);
-            element_close($name);
-        }
-        else {
-            element_empty($name, @attrs);
-        }
+        @children
+          ??  element_open($name, @attrs)
+              ~ visit(@children)
+              ~ element_close($name)
+          !!  element_empty($name, @attrs);
     }
 
     sub element_open($name, @attrs) {
-        take sprintf '<%s%s>', $name, element_attrs(@attrs);
+        sprintf '<%s%s>', $name, element_attrs(@attrs);
     }
 
     sub element_close($name) {
-        take "</$name>";
+        "</$name>";
     }
 
     sub element_empty($name, @attrs) {
-        take sprintf '<%s%s />', $name, element_attrs(@attrs);
+        sprintf '<%s%s />', $name, element_attrs(@attrs);
     }
 
     sub element_attrs(@attrs) {
-        return join ' ', '', @attrs.map: { .fmt: '%s="%s"' };
+        [~] @attrs>>.fmt: ' %s="%s"';
     }
 
     sub visit(@list) {
-        for find_elements(@list) -> $element {
+        [~] @list.map: -> $element {
             if $element ~~ Str {
-                take $element;
+                $element;
             }
             else {
                 my ($name, $subtree) = $element.kv;
-                my @attrs = find_attributes($subtree);
-                my @children = find_elements($subtree);
+                my @attrs    = find_attributes($subtree);
+                my @children = find_elements\ ($subtree);
                 element($name, @attrs, @children);
             }
         }
