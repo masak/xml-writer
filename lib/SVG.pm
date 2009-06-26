@@ -101,6 +101,7 @@ L<http://www.w3.org/TR/SVG/>
 
 =head1 AUTHOR
 Carl Mäsak (masak on CPAN github #perl6, cmasak on gmail.com)
+significant contributions made by Daniel Schröer.
 
 =end pod
 
