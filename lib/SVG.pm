@@ -37,10 +37,20 @@ class SVG {
         [~] @attrs>>.fmt: ' %s="%s"';
     }
 
+    sub escape($str) {
+        my %charmap =
+            '>' => '&gt;',
+            '<' => '&lt;',
+            '"' => '&quot;',
+            '&' => '&amp;',
+            ;
+        $str.subst( rx{ <[<>&"]> }, { %charmap{$_} }, :g);
+    }
+
     sub visit(@list) {
         [~] @list.map: -> $node {
             if $node ~~ Str {
-                $node;
+                escape($node);
             }
             else {
                 my ($name, $subtree) = $node.kv;
@@ -105,3 +115,4 @@ significant contributions made by Daniel Schröer.
 
 =end pod
 
+# vim: ft=perl6 sw=4 ts=4 expandtab
