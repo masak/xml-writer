@@ -34,7 +34,7 @@ class SVG {
     }
 
     sub element_attrs(@attrs) {
-        [~] @attrs>>.fmt: ' %s="%s"';
+        [~] @attrs.map({ sprintf ' %s="%s"', .key, escape(.value) });
     }
 
     sub escape($str) {
