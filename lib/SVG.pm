@@ -44,7 +44,7 @@ class SVG {
             '"' => '&quot;',
             '&' => '&amp;',
             ;
-        $str.subst( rx{ <[<>&"]> }, { %charmap{$_} }, :g);
+        $str.subst( rx/ <[<>&"]> /, { %charmap{$_} }, :g);
     }
 
     sub visit(@list) {
