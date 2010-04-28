@@ -6,8 +6,11 @@ use Test;
 plan *;
 ok SVG.serialize('a' => [ :b<c>, '<foo>' ]) !~~ / '<foo>' /,
    'plain text is escaped (<>)';
-ok SVG.serialize('a' => [ :b<c>, '&' ]) ~~ / '&amp;' /,
-   'plain text is escaped (&)';
+given SVG.serialize('a' => [ :b<c>, '&' ]) {
+    ok  $_ ~~ / '&amp;' /,
+    'plain text is escaped (&)'
+        or diag "XML: $_";
+}
 ok SVG.serialize('a' => [ :b<c>, 'a"b' ]) !~~ / 'a"b' /,
    'plain text is escaped (")';
 
