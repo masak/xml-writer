@@ -10,7 +10,6 @@ dies_ok {SVG.serialize() }, 'Cannot serialize nothing';
 is SVG.serialize(:x[]), '<x />', 'Single root element (named)';
 is SVG.serialize((:x[])), '<x />', 'Single root element (positional)';
 
-todo('Argument passing');
 dies_ok {SVG.serialize((:x[]), :x[]) }, 'Can either pass named or positional';
 
 is SVG.serialize(:x['foo']), '<x>foo</x>',

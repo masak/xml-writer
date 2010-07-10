@@ -13,40 +13,40 @@ class SVG {
             $t = %named.pairs.[0];
         }
         die 'The XML tree must have a single root node'
-            unless 1 == $t.elems && is_element($t);
-        visit($t.list);
+            unless 1 == $t.elems && $.is_element($t);
+        $.visit($t.list);
     }
 
-    my &is_attribute = { $_ ~~ Pair && $_.value !~~ Array };
-    my &is_element   = { $_ ~~ Pair && $_.value ~~ Array };
-    my &is_text_node = { $_ ~~ Str };
-    my &is_node      = { is_element($_) || is_text_node($_) };
+    method is_attribute($x) { $x ~~ Pair && $x.value !~~ Array };
+    method is_element($x)   { $x ~~ Pair && $x.value ~~ Array };
+    method is_text_node($x) { $x ~~ Str };
+    method is_node($x)      { $.is_element($x) || $.is_text_node($x) };
 
-    sub element($name, @attrs, @children) {
+    method element($name, @attrs, @children) {
         @children
-          ??  element_open($name, @attrs)
-              ~ visit(@children)
-              ~ element_close($name)
-          !!  element_empty($name, @attrs);
+          ??  $.element_open($name, @attrs)
+              ~ $.visit(@children)
+              ~ $.element_close($name)
+          !!  $.element_empty($name, @attrs);
     }
 
-    sub element_open($name, @attrs) {
-        sprintf '<%s%s>', $name, element_attrs(@attrs);
+    method element_open($name, @attrs) {
+        sprintf '<%s%s>', $name, $.element_attrs(@attrs);
     }
 
-    sub element_close($name) {
+    method element_close($name) {
         "</$name>";
     }
 
-    sub element_empty($name, @attrs) {
-        sprintf '<%s%s />', $name, element_attrs(@attrs);
+    method element_empty($name, @attrs) {
+        sprintf '<%s%s />', $name, $.element_attrs(@attrs);
     }
 
-    sub element_attrs(@attrs) {
-        [~] @attrs.map({ sprintf ' %s="%s"', .key, escape(.value) });
+    method element_attrs(@attrs) {
+        [~] @attrs.map({ sprintf ' %s="%s"', .key, $.escape(.value) });
     }
 
-    sub escape($str) {
+    method escape($str) {
         my %charmap =
             '>' => '&gt;',
             '<' => '&lt;',
@@ -56,16 +56,16 @@ class SVG {
         $str.subst( rx/ <[<>&"]> /, -> $x { %charmap{~$x} }, :g);
     }
 
-    sub visit(@list) {
+    method visit(@list) {
         [~] @list.map: -> $node {
             if $node ~~ Str {
-                escape($node);
+                $.escape($node);
             }
             else {
                 my ($name, $subtree) = $node.kv;
-                my @attrs    = grep &is_attribute, $subtree.list;
-                my @children = grep &is_node,      $subtree.list;
-                element($name, @attrs, @children);
+                my @attrs    = grep {$.is_attribute($_) }, $subtree.list;
+                my @children = grep {$.is_node($_) },      $subtree.list;
+                $.element($name, @attrs, @children);
             }
         }
     }
@@ -120,7 +120,7 @@ L<http://www.w3.org/TR/SVG/>
 
 =head1 AUTHORS
 Carl Mäsak (masak on CPAN github #perl6, cmasak on gmail.com)
-significant contributions made by Daniel Schröer.
+significant contributions made by Daniel Schröer and Moritz Lenz.
 
 =end pod
 
