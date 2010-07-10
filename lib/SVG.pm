@@ -2,10 +2,19 @@ use v6;
 
 class SVG {
 
-    method serialize($tree) {
+    method serialize($tree?, *%named) {
+        my $t;
+        my $err = "Please pass exactly one argument to SVG.serialize";
+        if defined($tree) {
+            die $err unless %named.pairs == 0;
+            $t = $tree;
+        } else {
+            die $err unless %named.pairs == 1;
+            $t = %named.pairs.[0];
+        }
         die 'The XML tree must have a single root node'
-            unless 1 == $tree.elems && is_element($tree);
-        visit($tree.list);
+            unless 1 == $t.elems && is_element($t);
+        visit($t.list);
     }
 
     my &is_attribute = { $_ ~~ Pair && $_.value !~~ Array };
@@ -44,7 +53,7 @@ class SVG {
             '"' => '&quot;',
             '&' => '&amp;',
             ;
-        $str.subst( rx/ <[<>&"]> /, { %charmap{$_} }, :g);
+        $str.subst( rx/ <[<>&"]> /, -> $x { %charmap{~$x} }, :g);
     }
 
     sub visit(@list) {
