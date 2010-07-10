@@ -17,8 +17,8 @@ class SVG {
         $.visit($t.list);
     }
 
-    method is_attribute($x) { $x ~~ Pair && $x.value !~~ Array };
-    method is_element($x)   { $x ~~ Pair && $x.value ~~ Array };
+    method is_attribute($x) { $x ~~ Pair && $x.value !~~ Positional };
+    method is_element($x)   { $x ~~ Pair && $x.value ~~ Positional };
     method is_text_node($x) { $x ~~ Str };
     method is_node($x)      { $.is_element($x) || $.is_text_node($x) };
 
