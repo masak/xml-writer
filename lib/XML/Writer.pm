@@ -1,10 +1,10 @@
 use v6;
 
-class SVG {
+class XML::Writer {
 
     method serialize($tree?, *%named) {
         my $t;
-        my $err = "Please pass exactly one argument to SVG.serialize";
+        my $err = "Please pass exactly one argument to XML::Writer.serialize";
         if defined($tree) {
             die $err unless %named.pairs == 0;
             $t = $tree;
@@ -74,12 +74,12 @@ class SVG {
 =begin pod
 
 =head1 NAME
-SVG - Scalable Vector Graphics generation and handling
+XML::Writer - XML generation and handling
 
 =head1 SYNOPSIS
 =begin code
 use v6;
-use SVG;
+use XML::Writer;
 
 my $svg = :svg[
     :width(200), :height(200),
@@ -91,13 +91,14 @@ my $svg = :svg[
     ]
 ];
 
-say SVG.serialize($svg);
+say XML::Writer.serialize($svg);
 =end code
 
 =head1 DESCRIPTION
 
-SVG is a Perl 6 class which outputs SVG from a nested data structure describing
-the DOM representation of an SVG (Scalable Vector Graphics) image.
+XML::Writer is a Perl 6 class which outputs XML from a nested data structure
+describing the DOM representation of an XML file.
+
 =head1 METHODS
 =head2 serialize($hierarchy)
 
@@ -105,18 +106,9 @@ the DOM representation of an SVG (Scalable Vector Graphics) image.
 The testing plan of SVG::Tiny seems alluring. Haven't looked closer at it,
 though.
 
-=head1 TODO
-Add some kind of validation. Three competing ideas are given here: validate
-at runtime, by calling a separate method in SVG; validate while serializing;
-validate statically with a script that can understand Perl 6, and draw some
-conclusions about the input to the .serialize method.
-
 =head1 BUGS
-Likely several. If any of them bites you, please get in touch and I'll see
-what I can do.
-
-=head1 SEE ALSO
-L<http://www.w3.org/TR/SVG/>
+Likely several. If any of them bites you, please get in touch and we'll see
+what we can do.
 
 =head1 AUTHORS
 Carl Mäsak (masak on CPAN github #perl6, cmasak on gmail.com)

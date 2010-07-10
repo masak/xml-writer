@@ -1,17 +1,16 @@
 use v6;
-BEGIN { @*INC.push: 'lib', '../lib' };
 
-use SVG;
+use XML::Writer;
 use Test;
 plan *;
-ok SVG.serialize('a' => [ :b<c>, '<foo>' ]) !~~ / '<foo>' /,
+ok XML::Writer.serialize('a' => [ :b<c>, '<foo>' ]) !~~ / '<foo>' /,
    'plain text is escaped (<>)';
-given SVG.serialize('a' => [ :b<c>, '&' ]) {
+given XML::Writer.serialize('a' => [ :b<c>, '&' ]) {
     ok  $_ ~~ / '&amp;' /,
     'plain text is escaped (&)'
         or diag "XML: $_";
 }
-ok SVG.serialize('a' => [ :b<c>, 'a"b' ]) !~~ / 'a"b' /,
+ok XML::Writer.serialize('a' => [ :b<c>, 'a"b' ]) !~~ / 'a"b' /,
    'plain text is escaped (")';
 
 done_testing;

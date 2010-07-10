@@ -1,6 +1,6 @@
 #!perl6
 use v6;
-use SVG;
+use XML::Writer;
 
 my $svg = svg => [
     :width(200), :height(200),
@@ -9,4 +9,4 @@ my $svg = svg => [
     ],
 ];
 
-say SVG.serialize($svg);
+say XML::Writer.serialize($svg);

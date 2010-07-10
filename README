@@ -1,23 +1,12 @@
-SVG is a module for creating Scalable Vector Graphics in Perl 6. Copyright
-2009, the SVG contributors (as listed in AUTHORS).
+XML::Writer is a module for creating XML in Perl 6. Copyright
+2009-2010, the XML::Writer contributors (as listed in AUTHORS).
 
-The specification outlining SVG can be found here: <http://www.w3.org/TR/SVG/>
+== Getting XML::Writer up and running
 
-== Getting SVG up and running
-
-=== ...with proto
-
- $ git clone git://github.com/masak/proto.git  # (1) download proto installer
- $ cd proto
- $ ./proto install svg                         # (2) use it to install SVG
- $ cd projects/svg
- $ perl6 svg-example                           # (3) ...and you're off!
-
-=== ...without proto
-
-TBW. :)
+ $ ./proto install xml-writer
+ $ cd projects/xml-writer
+ $ perl6 svg-example
 
 == License
 
-The SVG module is released under Artistic 2.0. See LICENSE.
-Permission to release the game graciously given by the game author.
+The XML::Writer module is released under Artistic 2.0. See LICENSE.
