@@ -17,4 +17,14 @@ is XML::Writer.serialize(:x[:a<b>, 'foo']), '<x a="b">foo</x>', 'attribute';
 
 is XML::Writer.serialize(:x[12]), '<x>12</x>', 'numbers also work like text';
 
+# check that very long XML output occasionally contains a newline
+
+my $xml = :longidentifier[
+    (1..20).map: { ; "foobarbaz$_" => [ 'abc' x 5 ] }
+];
+
+ok XML::Writer.serialize($xml).match(rx/\n/, :x(5)),
+    'Long XML is occasionally line-wrapped';
+
 done_testing;
+# vim: ft=perl6

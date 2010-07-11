@@ -57,17 +57,24 @@ class XML::Writer {
     }
 
     method visit(@list) {
-        [~] @list.map: -> $node {
+        my $result = '';
+        my $last-newline-since = 0;
+        for @list -> $node {
             if $.is_text_node($node) {
-                $.escape($node);
+                $result ~= $.escape($node);
             }
             else {
                 my ($name, $subtree) = $node.kv;
                 my @attrs    = grep {$.is_attribute($_) }, $subtree.list;
                 my @children = grep {$.is_node($_) },      $subtree.list;
-                $.element($name, @attrs, @children);
+                $result ~= $.element($name, @attrs, @children);
+                if $result.chars - $last-newline-since > 70 {
+                    $result ~= "\n";
+                    $last-newline-since = $result.chars;
+                }
             }
         }
+        $result;
     }
 }
 
