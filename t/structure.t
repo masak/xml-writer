@@ -15,4 +15,6 @@ is XML::Writer.serialize(:x['foo']), '<x>foo</x>',
 
 is XML::Writer.serialize(:x[:a<b>, 'foo']), '<x a="b">foo</x>', 'attribute';
 
+is XML::Writer.serialize(:x[12]), '<x>12</x>', 'numbers also work like text';
+
 done_testing;

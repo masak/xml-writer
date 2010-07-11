@@ -19,7 +19,7 @@ class XML::Writer {
 
     method is_attribute($x) { $x ~~ Pair && $x.value !~~ Positional };
     method is_element($x)   { $x ~~ Pair && $x.value ~~ Positional };
-    method is_text_node($x) { $x ~~ Str };
+    method is_text_node($x) { ($x ~~ Str) || ($x ~~ Numeric) };
     method is_node($x)      { $.is_element($x) || $.is_text_node($x) };
 
     method element($name, @attrs, @children) {
@@ -58,7 +58,7 @@ class XML::Writer {
 
     method visit(@list) {
         [~] @list.map: -> $node {
-            if $node ~~ Str {
+            if $.is_text_node($node) {
                 $.escape($node);
             }
             else {
