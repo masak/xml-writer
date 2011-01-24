@@ -13,4 +13,4 @@ given XML::Writer.serialize('a' => [ :b<c>, '&' ]) {
 ok XML::Writer.serialize('a' => [ :b<c>, 'a"b' ]) !~~ / 'a"b' /,
    'plain text is escaped (")';
 
-done_testing;
+done;

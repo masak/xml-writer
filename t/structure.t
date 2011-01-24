@@ -26,5 +26,5 @@ my $xml = :longidentifier[
 ok XML::Writer.serialize($xml).match(rx/\n/, :x(5)),
     'Long XML is occasionally line-wrapped';
 
-done_testing;
+done;
 # vim: ft=perl6
