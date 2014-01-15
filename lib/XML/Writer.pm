@@ -6,10 +6,10 @@ class XML::Writer {
         my $t;
         my $err = "Please pass exactly one argument to XML::Writer.serialize";
         if defined($tree) {
-            die $err unless %named.pairs == 0;
+            die $err unless +%named == 0;
             $t = $tree;
         } else {
-            die $err unless %named.pairs == 1;
+            die $err unless +%named == 1;
             $t = %named.pairs.[0];
         }
         die 'The XML tree must have a single root node'
