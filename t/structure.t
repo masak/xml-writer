@@ -20,7 +20,7 @@ is XML::Writer.serialize(:x[12]), '<x>12</x>', 'numbers also work like text';
 # check that very long XML output occasionally contains a newline
 
 my $xml = :longidentifier[
-    (1..20).map: { ; "foobarbaz$_" => [ 'abc' x 5 ] }
+    (1..20).for: { ; "foobarbaz$_" => [ 'abc' x 5 ] }
 ];
 
 ok XML::Writer.serialize($xml).match(rx/\n/, :x(5)),
